@@ -9,6 +9,7 @@ Usage:
 #include "Linear.hpp"
 //#include "Tree.hpp"
 //#include "HashMap.hpp"
+#include "Person.h"
 #include <string>
 
 
@@ -105,6 +106,66 @@ TEST_CASE("Test Linear<std::string>", "[Linear]"){
         s.insertElement("ccc");
         std::cout << "Checking Linear<std::string> operator output: " << std::endl;
         std::cout << "Should be: aaa, bbb, ccc" << std::endl << "Is: " << s << std::endl << std::endl;
+    }
+}
+
+TEST_CASE("Test Linear<struct>", "[Linear]"){
+    SECTION("Test getElementAtIndex()"){
+        Linear<Person> p;
+        REQUIRE_THROWS(p.getElementAtIndex(2));
+    }
+
+    SECTION("Test insertElement()"){
+        Linear<Person> p;
+        Person p1 = {"John", 24};
+        Person p2 = {"Angie",37};
+        Person p3 = {"Alex", 51};
+        p.insertElement(p1);
+        p.insertElement(p2);
+        p.insertElement(p3);
+        REQUIRE(p.getElementAtIndex(0) == p1);
+        REQUIRE(p.getElementAtIndex(1) == p2);
+        REQUIRE(p.getElementAtIndex(2) == p3);
+    }
+
+    SECTION("Test search()"){
+        Linear<Person> p;
+        Person p1 = {"John", 24};
+        Person p2 = {"Angie",37};
+        Person p3 = {"Alex", 51};
+        p.insertElement(p1);
+        p.insertElement(p2);
+        p.insertElement(p3);
+        REQUIRE(p.search(p1) == true);
+        REQUIRE(p.search(p2) == true);
+        REQUIRE(p.search(p3) == true);
+        REQUIRE(p.search({"Johnny", 21}) == false);
+        REQUIRE(p.search({"Jackie", 29}) == false);
+    }
+    
+    SECTION("Test deleteElement()"){
+        Linear<Person> p;
+        Person p1 = {"John", 24};
+        Person p2 = {"Angie",37};
+        Person p3 = {"Alex", 51};
+        p.insertElement(p1);
+        p.insertElement(p2);
+        p.insertElement(p3);
+        p.deleteElement(p2);
+        REQUIRE(p.getElementAtIndex(1) == p3);
+        REQUIRE_THROWS(p.getElementAtIndex(2));
+    }
+
+    SECTION("Test overloaded operator <<"){
+        Linear<Person> p;
+        Person p1 = {"John", 24};
+        Person p2 = {"Angie",37};
+        Person p3 = {"Alex", 51};
+        p.insertElement(p1);
+        p.insertElement(p2);
+        p.insertElement(p3);
+        std::cout << "Checking Linear<struct> operator output: " << std::endl;
+        std::cout << "Should be: {\"John\", 24}, {\"Angie\",37}, {\"Alex\", 51}" << std::endl << "Is: " << p << std::endl << std::endl;
     }
 }
 
