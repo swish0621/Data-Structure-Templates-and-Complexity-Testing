@@ -7,11 +7,59 @@ Usage:
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "Linear.hpp"
-#include "Tree.hpp"
-#include "HashMap.hpp"
+//#include "Tree.hpp"
+//#include "HashMap.hpp"
+#include <string>
 
 
-TEST_CASE("Test Linear Structure", "[Linear]"){}
+TEST_CASE("Test Linear<int>", "[Linear]"){
+    SECTION("Test getElementAtIndex()"){
+        Linear<int> i;
+        REQUIRE_THROWS(i.getElementAtIndex(3));
+    }
+
+    SECTION("Test insertElement()"){
+        Linear<int> i;
+        i.insertElement(10);
+        i.insertElement(20);
+        i.insertElement(30);
+        REQUIRE(i.getElementAtIndex(0) == 10);
+        REQUIRE(i.getElementAtIndex(1) == 20);
+        REQUIRE(i.getElementAtIndex(2) == 30);
+    }
+
+    SECTION("Test search()"){
+        Linear<int> i;
+        i.insertElement(10);
+        i.insertElement(20);
+        i.insertElement(30);
+        REQUIRE(i.search(10) == true);
+        REQUIRE(i.search(20) == true);
+        REQUIRE(i.search(30) == true);
+        REQUIRE(i.search(0) == false);
+        REQUIRE(i.search(100) == false);
+    }
+    
+    SECTION("Test deleteElement()"){
+        Linear<int> i;
+        i.insertElement(10);
+        i.insertElement(20);
+        i.insertElement(30);
+        i.deleteElement(20);
+        REQUIRE(i.getElementAtIndex(1) == 30);
+        REQUIRE_THROWS(i.getElementAtIndex(2));
+    }
+
+    SECTION("Test overloaded operator <<"){
+        Linear<int> i;
+        i.insertElement(10);
+        i.insertElement(20);
+        i.insertElement(30);
+        std::cout << "Checking Linear<int> operator output: " << std::endl;
+        std::cout << "Should be: 10, 20, 30" << std::endl << "Is: " << i << std::endl << std::endl;
+    }
+}
+
 TEST_CASE("Test Tree Structure", "[Tree]"){}
 TEST_CASE("Test HashMap Structure", "[HashMap]"){}
 
