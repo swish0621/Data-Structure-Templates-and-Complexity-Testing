@@ -60,6 +60,54 @@ TEST_CASE("Test Linear<int>", "[Linear]"){
     }
 }
 
+TEST_CASE("Test Linear<std::string>", "[Linear]"){
+    SECTION("Test getElementAtIndex()"){
+        Linear<std::string> s;
+        REQUIRE_THROWS(s.getElementAtIndex(2));
+    }
+
+    SECTION("Test insertElement()"){
+        Linear<std::string> s;
+        s.insertElement("aaa");
+        s.insertElement("bbb");
+        s.insertElement("ccc");
+        REQUIRE(s.getElementAtIndex(0) == "aaa");
+        REQUIRE(s.getElementAtIndex(1) == "bbb");
+        REQUIRE(s.getElementAtIndex(2) == "ccc");
+    }
+
+    SECTION("Test search()"){
+        Linear<std::string> s;
+        s.insertElement("aaa");
+        s.insertElement("bbb");
+        s.insertElement("ccc");
+        REQUIRE(s.search("aaa") == true);
+        REQUIRE(s.search("bbb") == true);
+        REQUIRE(s.search("ccc") == true);
+        REQUIRE(s.search("ddd") == false);
+        REQUIRE(s.search("zzz") == false);
+    }
+    
+    SECTION("Test deleteElement()"){
+        Linear<std::string> s;
+        s.insertElement("aaa");
+        s.insertElement("bbb");
+        s.insertElement("ccc");
+        s.deleteElement("bbb");
+        REQUIRE(s.getElementAtIndex(1) == "ccc");
+        REQUIRE_THROWS(s.getElementAtIndex(2));
+    }
+
+    SECTION("Test overloaded operator <<"){
+        Linear<std::string> s;
+        s.insertElement("aaa");
+        s.insertElement("bbb");
+        s.insertElement("ccc");
+        std::cout << "Checking Linear<std::string> operator output: " << std::endl;
+        std::cout << "Should be: aaa, bbb, ccc" << std::endl << "Is: " << s << std::endl << std::endl;
+    }
+}
+
 TEST_CASE("Test Tree Structure", "[Tree]"){}
 TEST_CASE("Test HashMap Structure", "[HashMap]"){}
 
