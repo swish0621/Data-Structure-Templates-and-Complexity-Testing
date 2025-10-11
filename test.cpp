@@ -1,6 +1,6 @@
 /*
 Name: Nicholas Swisher
-Purpose:
+Purpose: Verify that the Linear, Tree and HashMap templates function correctly 
 Usage:
 */
 
@@ -11,4 +11,7 @@ Usage:
 #include "HashMap.hpp"
 
 
+TEST_CASE("Test Linear Structure", "[Linear]"){}
+TEST_CASE("Test Tree Structure", "[Tree]"){}
+TEST_CASE("Test HashMap Structure", "[HashMap]"){}
 
