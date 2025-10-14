@@ -16,7 +16,8 @@ class Linear {
         // Input: an Integer representing the index to get the value from (0 based) 
         // Result: returns the value that is stored at that index if the index exists 
         T getElementAtIndex(int index) const {
-            if(store.empty() || index >= store.size()){
+            std::size_t idx = index; 
+            if(store.empty() || idx >= store.size()){
                 throw std::runtime_error("Store is empty or invalid index.");
             }
             else{
