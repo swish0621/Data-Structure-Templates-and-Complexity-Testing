@@ -1,13 +1,16 @@
 /*
 Name: Nicholas Swisher
 Purpose: Verify that the Linear, Tree and HashMap templates function correctly 
-Usage:
+Usage: When run Linear, Tree and HashMap objects will be created and tested using catch2 unittesting.
+make clean - removes all executable and object files
+make all - builds all necessary object files and executables
+./test - runs the unittesting 
 */
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "Linear.hpp"
-//#include "Tree.hpp"
+#include "Tree.hpp"
 //#include "HashMap.hpp"
 #include "Person.h"
 #include <string>
@@ -169,6 +172,267 @@ TEST_CASE("Test Linear<struct>", "[Linear]"){
     }
 }
 
-TEST_CASE("Test Tree Structure", "[Tree]"){}
+TEST_CASE("Test Tree<int>", "[Tree]"){
+    SECTION("Test Tree()"){
+        Tree<int> t(10);
+        REQUIRE(t.search(10) == true);
+        REQUIRE(t.search(20) == false);
+    }
+    
+
+    SECTION("Test insertElement() / search()"){
+        Tree<int> t(40);
+        
+        t.insertElement(20);
+        t.insertElement(60);
+        t.insertElement(10);
+        t.insertElement(30);
+        t.insertElement(50);
+        t.insertElement(70);
+        REQUIRE(t.search(10) == true);
+        REQUIRE(t.search(20) == true);
+        REQUIRE(t.search(25) == false);
+        REQUIRE(t.search(35) == false);
+    }
+
+    SECTION("Testing deleteElement()"){
+        Tree<int> t(40);
+        
+        t.insertElement(20);
+        t.insertElement(60);
+        t.insertElement(10);
+        t.insertElement(30);
+        t.insertElement(50);
+        t.insertElement(70);
+
+        // delete node with 2 children
+        t.deleteElement(60);
+        REQUIRE(t.search(60) == false);
+        REQUIRE(t.search(10) == true);
+        REQUIRE(t.search(20) == true);
+        REQUIRE(t.search(30) == true);
+        REQUIRE(t.search(40) == true);
+        REQUIRE(t.search(50) == true);
+        REQUIRE(t.search(70) == true);
+
+        // delete root 
+        t.deleteElement(40);
+        REQUIRE(t.search(40) == false);
+        REQUIRE(t.search(10) == true);
+        REQUIRE(t.search(20) == true);
+        REQUIRE(t.search(30) == true);
+        REQUIRE(t.search(50) == true);
+        REQUIRE(t.search(70) == true);
+
+        // delete node with only one child 
+        t.insertElement(80);
+        t.deleteElement(70);
+        REQUIRE(t.search(70) == false);
+        REQUIRE(t.search(10) == true);
+        REQUIRE(t.search(20) == true);
+        REQUIRE(t.search(30) == true);
+        REQUIRE(t.search(50) == true);
+        REQUIRE(t.search(80) == true);
+    }
+
+    SECTION("Test overloaded operator"){
+        Tree<int> t(40);
+        
+        t.insertElement(20);
+        t.insertElement(60);
+        t.insertElement(10);
+        t.insertElement(30);
+        t.insertElement(50);
+        t.insertElement(70);
+        std::cout << "Checking Tree<int> operator output: " << std::endl;
+        std::cout << "Should be: 10, 20, 30, 40, 50, 60, 70" << std::endl << "Is: " << t << std::endl << std::endl;
+    }
+}
+
+TEST_CASE("Test Tree<std::string>", "[Tree]"){
+    SECTION("Test Tree()"){
+        Tree<std::string> t("aaa");
+        REQUIRE(t.search("aaa") == true);
+        REQUIRE(t.search("bbb") == false);
+    }
+    
+
+    SECTION("Test insertElement() / search()"){
+        Tree<std::string> t("ddd");
+        
+        t.insertElement("bbb");
+        t.insertElement("fff");
+        t.insertElement("aaa");
+        t.insertElement("ccc");
+        t.insertElement("eee");
+        t.insertElement("ggg");
+        REQUIRE(t.search("aaa") == true);
+        REQUIRE(t.search("bbb") == true);
+        REQUIRE(t.search("abc") == false);
+        REQUIRE(t.search("hhh") == false);
+    }
+
+    SECTION("Testing deleteElement()"){
+        Tree<std::string> t("ddd");
+        
+        t.insertElement("bbb");
+        t.insertElement("fff");
+        t.insertElement("aaa");
+        t.insertElement("ccc");
+        t.insertElement("eee");
+        t.insertElement("ggg");
+
+        // delete node with 2 children
+        t.deleteElement("fff");
+        REQUIRE(t.search("fff") == false);
+        REQUIRE(t.search("aaa") == true);
+        REQUIRE(t.search("bbb") == true);
+        REQUIRE(t.search("ccc") == true);
+        REQUIRE(t.search("ddd") == true);
+        REQUIRE(t.search("eee") == true);
+        REQUIRE(t.search("ggg") == true);
+
+        // delete root 
+        t.deleteElement("ddd");
+        REQUIRE(t.search("ddd") == false);
+        REQUIRE(t.search("aaa") == true);
+        REQUIRE(t.search("bbb") == true);
+        REQUIRE(t.search("ccc") == true);
+        REQUIRE(t.search("eee") == true);
+        REQUIRE(t.search("ggg") == true);
+
+        // delete node with only one child 
+        t.insertElement("hhh");
+        t.deleteElement("ggg");
+        REQUIRE(t.search("ggg") == false);
+        REQUIRE(t.search("ddd") == false);
+        REQUIRE(t.search("aaa") == true);
+        REQUIRE(t.search("bbb") == true);
+        REQUIRE(t.search("ccc") == true);
+        REQUIRE(t.search("eee") == true);
+        REQUIRE(t.search("hhh") == true);
+    }
+
+    SECTION("Test overloaded operator"){
+        Tree<std::string> t("ddd");
+        
+        t.insertElement("bbb");
+        t.insertElement("fff");
+        t.insertElement("aaa");
+        t.insertElement("ccc");
+        t.insertElement("eee");
+        t.insertElement("ggg");
+        std::cout << "Checking Tree<std::string> operator output: " << std::endl;
+        std::cout << "Should be: aaa, bbb, ccc, ddd, eee, fff, ggg" << std::endl << "Is: " << t << std::endl << std::endl;
+    }
+}
+
+TEST_CASE("Test Tree<struct>", "[Tree]"){
+    SECTION("Test Tree()"){
+        Person p1 = {"John", 24};
+        Person p2 = {"Angie",37};
+        Person p3 = {"Alex", 51};
+        Person p4 = {"Jane", 83};
+        Person p5 = {"Mary", 36};
+        Person p6 = {"Ryan", 28};
+        Person p7 = {"Caleb", 26};
+        Tree<Person> t(p1);
+        REQUIRE(t.search({"John", 24}) == true);
+        REQUIRE(t.search({"Jason", 34}) == false);
+    }
+    
+
+    SECTION("Test insertElement() / search()"){
+        Person p1 = {"John", 24};
+        Person p2 = {"Angie",37};
+        Person p3 = {"Alex", 51};
+        Person p4 = {"Jane", 83};
+        Person p5 = {"Mary", 36};
+        Person p6 = {"Ryan", 28};
+        Person p7 = {"Caleb", 26};
+        Tree<Person> t(p1);
+        t.insertElement(p2);
+        t.insertElement(p3);
+        t.insertElement(p4);
+        t.insertElement(p5);
+        t.insertElement(p6);
+        t.insertElement(p7);
+        REQUIRE(t.search(p4) == true);
+        REQUIRE(t.search(p7) == true);
+        REQUIRE(t.search({"Jason", 63}) == false);
+        REQUIRE(t.search({"James", 21}) == false);
+    }
+
+    SECTION("Testing deleteElement()"){
+        Person p1 = {"John", 24};
+        Person p2 = {"Caleb", 26};
+        Person p3 = {"Ryan", 28};
+        Person p4 = {"Mary", 36};
+        Person p5 = {"Angie",37};
+        Person p6 = {"Alex", 51};
+        Person p7 = {"Jane", 83};
+        
+
+        Tree<Person> t(p4);
+        t.insertElement(p2);
+        t.insertElement(p6);
+        t.insertElement(p1);
+        t.insertElement(p3);
+        t.insertElement(p5);
+        t.insertElement(p7);
+
+        // delete node with 2 children
+        t.deleteElement(p6);
+        REQUIRE(t.search(p6) == false);
+        REQUIRE(t.search(p1) == true);
+        REQUIRE(t.search(p2) == true);
+        REQUIRE(t.search(p3) == true);
+        REQUIRE(t.search(p4) == true);
+        REQUIRE(t.search(p5) == true);
+        REQUIRE(t.search(p7) == true);
+
+        // delete root 
+        t.deleteElement(p4);
+        REQUIRE(t.search(p4) == false);
+        REQUIRE(t.search(p1) == true);
+        REQUIRE(t.search(p2) == true);
+        REQUIRE(t.search(p3) == true);
+        REQUIRE(t.search(p5) == true);
+        REQUIRE(t.search(p7) == true);
+
+        // delete node with only one child 
+        Person p8 = {"Carol", 91};
+        t.insertElement(p8);
+        t.deleteElement(p7);
+        REQUIRE(t.search(p7) == false);
+        REQUIRE(t.search(p1) == true);
+        REQUIRE(t.search(p2) == true);
+        REQUIRE(t.search(p3) == true);
+        REQUIRE(t.search(p5) == true);
+        REQUIRE(t.search(p8) == true);
+    }
+
+    SECTION("Test overloaded operator"){
+        Person p1 = {"John", 24};
+        Person p2 = {"Caleb", 26};
+        Person p3 = {"Ryan", 28};
+        Person p4 = {"Mary", 36};
+        Person p5 = {"Angie",37};
+        Person p6 = {"Alex", 51};
+        Person p7 = {"Jane", 83};
+        
+
+        Tree<Person> t(p4);
+        t.insertElement(p2);
+        t.insertElement(p6);
+        t.insertElement(p1);
+        t.insertElement(p3);
+        t.insertElement(p5);
+        t.insertElement(p7);
+        std::cout << "Checking Tree<struct> operator output: " << std::endl;
+        std::cout << "{John, 24}, {Caleb, 26}, {Ryan, 28}, {Mary, 36}, {Angie,37}, {Alex, 51}, {Jane, 83}" << std::endl << "Is: " << t << std::endl << std::endl;
+    }
+}
+
 TEST_CASE("Test HashMap Structure", "[HashMap]"){}
 
