@@ -13,6 +13,22 @@ struct Person{
             return false;
         }
     }
+    bool operator>(const Person& other ) const {
+        if(this->age > other.age){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    bool operator<(const Person& other ) const {
+        if(this->age < other.age){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     friend std::ostream& operator<<(std::ostream& os, const Person& p){
         os << "{" << p.name << ", " << p.age << "}";
