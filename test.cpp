@@ -11,7 +11,7 @@ make all - builds all necessary object files and executables
 #include "catch.hpp"
 #include "Linear.hpp"
 #include "Tree.hpp"
-//#include "HashMap.hpp"
+#include "HashMap.hpp"
 #include "Person.h"
 #include <string>
 
@@ -434,5 +434,213 @@ TEST_CASE("Test Tree<struct>", "[Tree]"){
     }
 }
 
-TEST_CASE("Test HashMap Structure", "[HashMap]"){}
+TEST_CASE("Test HashMap<int>", "[HashMap]"){
+    SECTION("Test HashMap()"){
+        std::vector<int> vals = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        HashMap<int> h(vals, 9);
+        REQUIRE(h.search(1) == true);
+        REQUIRE(h.search(2) == true);
+        REQUIRE(h.search(3) == true);
+        REQUIRE(h.search(4) == true);
+        REQUIRE(h.search(5) == true);
+        REQUIRE(h.search(6) == true);
+        REQUIRE(h.search(7) == true);
+        REQUIRE(h.search(8) == true);
+        REQUIRE(h.search(9) == true);
+        REQUIRE(h.search(10) == false);
+    }
 
+    SECTION("Test resize by forcing collisions"){
+        std::vector<int> vals = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        HashMap<int> h(vals, 9);
+        for(std::size_t i = 0; i < 100; i++){
+            h.insertElement(i % 10);
+        }
+        REQUIRE(h.search(1) == true);
+        REQUIRE(h.search(2) == true);
+        REQUIRE(h.search(3) == true);
+        REQUIRE(h.search(4) == true);
+        REQUIRE(h.search(5) == true);
+        REQUIRE(h.search(6) == true);
+        REQUIRE(h.search(7) == true);
+        REQUIRE(h.search(8) == true);
+        REQUIRE(h.search(9) == true);
+        REQUIRE(h.search(10) == false);
+    }
+
+    SECTION("Test delete"){
+        std::vector<int> vals = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        HashMap<int> h(vals, 9);
+        REQUIRE(h.search(1) == true);
+        REQUIRE(h.search(2) == true);
+        REQUIRE(h.search(3) == true);
+        REQUIRE(h.search(4) == true);
+        REQUIRE(h.search(5) == true);
+        REQUIRE(h.search(6) == true);
+        REQUIRE(h.search(7) == true);
+        REQUIRE(h.search(8) == true);
+        REQUIRE(h.search(9) == true);
+        REQUIRE(h.search(10) == false);
+
+        h.deleteElement(1);
+        h.deleteElement(2);
+        h.deleteElement(3);
+        REQUIRE(h.search(1) == false);
+        REQUIRE(h.search(2) == false);
+        REQUIRE(h.search(3) == false);
+    }
+}
+
+TEST_CASE("Test HashMap<std::string>", "[HashMap]"){
+    SECTION("Test Insert"){
+        std::vector<std::string> vals = {"aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii"};
+        HashMap<std::string> h(vals, 9);
+        REQUIRE(h.search("aaa") == true);
+        REQUIRE(h.search("bbb") == true);
+        REQUIRE(h.search("ccc") == true);
+        REQUIRE(h.search("ddd") == true);
+        REQUIRE(h.search("eee") == true);
+        REQUIRE(h.search("fff") == true);
+        REQUIRE(h.search("ggg") == true);
+        REQUIRE(h.search("hhh") == true);
+        REQUIRE(h.search("iii") == true);
+        REQUIRE(h.search("jjj") == false);
+    }
+
+    SECTION("Test resize by forcing collisions"){
+        std::vector<std::string> vals = {"aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii"};
+        HashMap<std::string> h(vals, 9);
+        for(std::size_t i = 0; i < 100; i++){
+            switch(i % 10){
+                case 0: h.insertElement("aaa");
+                case 1: h.insertElement("bbb");
+                case 2: h.insertElement("ccc");
+                case 3: h.insertElement("ddd");
+                case 4: h.insertElement("eee");
+                case 5: h.insertElement("fff");
+                case 6: h.insertElement("ggg");
+                case 7: h.insertElement("hhh");
+                case 8: h.insertElement("iii");
+            }
+        }
+        REQUIRE(h.search("aaa") == true);
+        REQUIRE(h.search("bbb") == true);
+        REQUIRE(h.search("ccc") == true);
+        REQUIRE(h.search("ddd") == true);
+        REQUIRE(h.search("eee") == true);
+        REQUIRE(h.search("fff") == true);
+        REQUIRE(h.search("ggg") == true);
+        REQUIRE(h.search("hhh") == true);
+        REQUIRE(h.search("iii") == true);
+        REQUIRE(h.search("jjj") == false);
+    }
+
+    SECTION("Test delete"){
+        std::vector<std::string> vals = {"aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii"};
+        HashMap<std::string> h(vals, 9);
+        REQUIRE(h.search("aaa") == true);
+        REQUIRE(h.search("bbb") == true);
+        REQUIRE(h.search("ccc") == true);
+        REQUIRE(h.search("ddd") == true);
+        REQUIRE(h.search("eee") == true);
+        REQUIRE(h.search("fff") == true);
+        REQUIRE(h.search("ggg") == true);
+        REQUIRE(h.search("hhh") == true);
+        REQUIRE(h.search("iii") == true);
+        REQUIRE(h.search("jjj") == false);
+
+        h.deleteElement("aaa");
+        h.deleteElement("bbb");
+        h.deleteElement("ccc");
+        REQUIRE(h.search("aaa") == false);
+        REQUIRE(h.search("bbb") == false);
+        REQUIRE(h.search("ccc") == false);
+    }
+}
+
+TEST_CASE("Test HashMap<struct>", "[HashMap]"){
+    SECTION("Test Insert"){
+        Person p1 = {"John", 24};
+        Person p2 = {"Caleb", 26};
+        Person p3 = {"Ryan", 28};
+        Person p4 = {"Mary", 36};
+        Person p5 = {"Angie",37};
+        Person p6 = {"Alex", 51};
+        Person p7 = {"Jane", 83};
+        std::vector<Person> vals = {p1, p2, p3, p4, p5, p6, p6, p7};
+        HashMap<Person> h(vals, 9);
+        REQUIRE(h.search(p1) == true);
+        REQUIRE(h.search(p2) == true);
+        REQUIRE(h.search(p3) == true);
+        REQUIRE(h.search(p4) == true);
+        REQUIRE(h.search(p5) == true);
+        REQUIRE(h.search(p5) == true);
+        REQUIRE(h.search(p6) == true);
+        REQUIRE(h.search(p7) == true);
+        REQUIRE(h.search({"Jason", 63}) == false);
+        REQUIRE(h.search({"James", 21}) == false);
+    }
+
+    SECTION("Test resize by forcing collisions"){
+        Person p1 = {"John", 24};
+        Person p2 = {"Caleb", 26};
+        Person p3 = {"Ryan", 28};
+        Person p4 = {"Mary", 36};
+        Person p5 = {"Angie",37};
+        Person p6 = {"Alex", 51};
+        Person p7 = {"Jane", 83};
+        std::vector<Person> vals = {p1, p2, p3, p4, p5, p6, p6, p7};
+        HashMap<Person> h(vals, 9);
+        for(std::size_t i = 0; i < 100; i++){
+            switch(i % 10){
+                case 0: h.insertElement(p1);
+                case 1: h.insertElement(p2);
+                case 2: h.insertElement(p3);
+                case 3: h.insertElement(p4);
+                case 4: h.insertElement(p5);
+                case 5: h.insertElement(p6);
+                case 6: h.insertElement(p7);
+            }
+        }
+        REQUIRE(h.search(p1) == true);
+        REQUIRE(h.search(p2) == true);
+        REQUIRE(h.search(p3) == true);
+        REQUIRE(h.search(p4) == true);
+        REQUIRE(h.search(p5) == true);
+        REQUIRE(h.search(p5) == true);
+        REQUIRE(h.search(p6) == true);
+        REQUIRE(h.search(p7) == true);
+        REQUIRE(h.search({"Jason", 63}) == false);
+        REQUIRE(h.search({"James", 21}) == false);
+        
+    }
+
+    SECTION("Test delete"){
+        Person p1 = {"John", 24};
+        Person p2 = {"Caleb", 26};
+        Person p3 = {"Ryan", 28};
+        Person p4 = {"Mary", 36};
+        Person p5 = {"Angie",37};
+        Person p6 = {"Alex", 51};
+        Person p7 = {"Jane", 83};
+        std::vector<Person> vals = {p1, p2, p3, p4, p5, p6, p6, p7};
+        HashMap<Person> h(vals, 9);
+        REQUIRE(h.search(p1) == true);
+        REQUIRE(h.search(p2) == true);
+        REQUIRE(h.search(p3) == true);
+        REQUIRE(h.search(p4) == true);
+        REQUIRE(h.search(p5) == true);
+        REQUIRE(h.search(p5) == true);
+        REQUIRE(h.search(p6) == true);
+        REQUIRE(h.search(p7) == true);
+        REQUIRE(h.search({"Jason", 63}) == false);
+        REQUIRE(h.search({"James", 21}) == false);
+
+        h.deleteElement(p1);
+        h.deleteElement(p2);
+        h.deleteElement(p3);
+        REQUIRE(h.search(p1) == false);
+        REQUIRE(h.search(p2) == false);
+        REQUIRE(h.search(p3) == false);
+    }
+}
