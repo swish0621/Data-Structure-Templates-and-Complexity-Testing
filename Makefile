@@ -9,6 +9,6 @@ clean:
 test: test.o
 	$(CXX) $(CXXFLAGS) test.o -o test
 
-test.o: test.cpp HashMap.hpp Tree.hpp Linear.hpp
+test.o: test.cpp Linear.hpp Tree.hpp HashMap.hpp
 	$(CXX) $(CXXFLAGS) -c test.cpp
 

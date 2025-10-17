@@ -14,6 +14,8 @@ make all - builds all necessary object files and executables
 #include "HashMap.hpp"
 #include "Person.h"
 #include <string>
+#include <fstream>
+#include <chrono>
 
 
 TEST_CASE("Test Linear<int>", "[Linear]"){
@@ -512,15 +514,15 @@ TEST_CASE("Test HashMap<std::string>", "[HashMap]"){
         HashMap<std::string> h(vals, 9);
         for(std::size_t i = 0; i < 100; i++){
             switch(i % 10){
-                case 0: h.insertElement("aaa");
-                case 1: h.insertElement("bbb");
-                case 2: h.insertElement("ccc");
-                case 3: h.insertElement("ddd");
-                case 4: h.insertElement("eee");
-                case 5: h.insertElement("fff");
-                case 6: h.insertElement("ggg");
-                case 7: h.insertElement("hhh");
-                case 8: h.insertElement("iii");
+                case 0: h.insertElement("aaa"); break;
+                case 1: h.insertElement("bbb"); break;
+                case 2: h.insertElement("ccc"); break;
+                case 3: h.insertElement("ddd"); break;
+                case 4: h.insertElement("eee"); break;
+                case 5: h.insertElement("fff"); break;
+                case 6: h.insertElement("ggg"); break;
+                case 7: h.insertElement("hhh"); break;
+                case 8: h.insertElement("iii"); break;
             }
         }
         REQUIRE(h.search("aaa") == true);
@@ -574,7 +576,6 @@ TEST_CASE("Test HashMap<struct>", "[HashMap]"){
         REQUIRE(h.search(p3) == true);
         REQUIRE(h.search(p4) == true);
         REQUIRE(h.search(p5) == true);
-        REQUIRE(h.search(p5) == true);
         REQUIRE(h.search(p6) == true);
         REQUIRE(h.search(p7) == true);
         REQUIRE(h.search({"Jason", 63}) == false);
@@ -593,13 +594,13 @@ TEST_CASE("Test HashMap<struct>", "[HashMap]"){
         HashMap<Person> h(vals, 9);
         for(std::size_t i = 0; i < 100; i++){
             switch(i % 10){
-                case 0: h.insertElement(p1);
-                case 1: h.insertElement(p2);
-                case 2: h.insertElement(p3);
-                case 3: h.insertElement(p4);
-                case 4: h.insertElement(p5);
-                case 5: h.insertElement(p6);
-                case 6: h.insertElement(p7);
+                case 0: h.insertElement(p1); break;
+                case 1: h.insertElement(p2); break;
+                case 2: h.insertElement(p3); break;
+                case 3: h.insertElement(p4); break;
+                case 4: h.insertElement(p5); break;
+                case 5: h.insertElement(p6); break;
+                case 6: h.insertElement(p7); break;
             }
         }
         REQUIRE(h.search(p1) == true);
@@ -643,4 +644,430 @@ TEST_CASE("Test HashMap<struct>", "[HashMap]"){
         REQUIRE(h.search(p2) == false);
         REQUIRE(h.search(p3) == false);
     }
+}
+
+TEST_CASE("TESTING LINEAR TIME COMPLEXITY", "[Linear Time Complexity]"){
+    std::cout << std::endl << "TESTING LINEAR RUNTIMES" << std::endl;
+    SECTION("Testing INT"){
+        Linear<int> l;
+        std::ifstream file("data/integers.csv");
+        if(!file.is_open()){
+            std::cerr << "file did not open.";
+        }
+        std::string str;
+        while(getline(file, str)){
+            int num = stoi(str);
+            l.insertElement(num);
+            
+        }
+        file.close();
+        {
+            std::cout << "Search for first element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = l.search(82272);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for last element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = l.search(43028);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for element position 10000 took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = l.search(35149);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+        
+
+    }
+    SECTION("Testing decimails"){
+        Linear<double> l;
+        std::ifstream file("data/decimals.csv");
+        if(!file.is_open()){
+            std::cerr << "file did not open.";
+        }
+        std::string str;
+        while(getline(file, str)){
+            double num = stod(str);
+            l.insertElement(num);
+            
+        }
+        file.close();
+        {
+            std::cout << "Search for first element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = l.search(192.46);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for last element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = l.search(637.79);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for element position 10000 took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = l.search(112.87);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+    }
+
+    SECTION("Testing strings"){
+        Linear<std::string> l;
+        std::ifstream file("data/strings.csv");
+        if(!file.is_open()){
+            std::cerr << "file did not open.";
+        }
+        std::string str;
+        while(getline(file, str)){
+            if(str.back() == '\r'){
+                str.pop_back();
+            }
+            l.insertElement(str);
+            
+        }
+        file.close();
+        {
+            std::string find = "adpaehyyk";
+            std::cout << "Search for first element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = l.search(find);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::string find = "dfbdfhrty";
+            std::cout << "Search for last element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = l.search(find);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::string find = "vvcmaz";
+            std::cout << "Search for element position 10000 took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = l.search(find);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+    }
+
+}
+
+TEST_CASE("TESTING TREE TIME COMPLEXITY", "[Tree Time Complexity]"){
+    std::cout << std::endl << "TESTING TREE RUNTIME" << std::endl;
+    SECTION("Testing INT"){
+        Tree<int> t;
+        std::ifstream file("data/integers.csv");
+        if(!file.is_open()){
+            std::cerr << "file did not open.";
+        }
+        std::string str;
+        while(getline(file, str)){
+            int num = stoi(str);
+            t.insertElement(num);
+            
+        }
+        file.close();
+        {
+            std::cout << "Search for first element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = t.search(82272);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for last element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = t.search(43028);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for element position 10000 took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = t.search(35149);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+        
+
+    }
+    SECTION("Testing decimails"){
+        Tree<double> t;
+        std::ifstream file("data/decimals.csv");
+        if(!file.is_open()){
+            std::cerr << "file did not open.";
+        }
+        std::string str;
+        while(getline(file, str)){
+            double num = stod(str);
+            t.insertElement(num);
+            
+        }
+        file.close();
+        {
+            std::cout << "Search for first element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = t.search(192.46);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for last element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = t.search(637.79);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for element position 10000 took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = t.search(112.87);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+    }
+
+    SECTION("Testing strings"){
+        Tree<std::string> t;
+        std::ifstream file("data/strings.csv");
+        if(!file.is_open()){
+            std::cerr << "file did not open.";
+        }
+        std::string str;
+        while(getline(file, str)){
+            if(str.back() == '\r'){
+                str.pop_back();
+            }
+            t.insertElement(str);
+            
+        }
+        file.close();
+        {
+            std::string find = "adpaehyyk";
+            std::cout << "Search for first element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = t.search(find);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::string find = "dfbdfhrty";
+            std::cout << "Search for last element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = t.search(find);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::string find = "vvcmaz";
+            std::cout << "Search for element position 10000 took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = t.search(find);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+    }
+
+}
+
+TEST_CASE("TESTING HASHMAP TIME COMPLEXITY", "[HashMap Time Complexity]"){
+    std::cout << std::endl << "TESTING HASHMAP RUNTIME" << std::endl;
+    SECTION("Testing INT"){
+        HashMap<int> h;
+        std::ifstream file("data/integers.csv");
+        if(!file.is_open()){
+            std::cerr << "file did not open.";
+        }
+        std::string str;
+        while(getline(file, str)){
+            int num = stoi(str);
+            h.insertElement(num);
+            
+        }
+        file.close();
+        {
+            std::cout << "Search for first element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = h.search(82272);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for last element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = h.search(43028);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for element position 10000 took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = h.search(35149);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+        
+
+    }
+    SECTION("Testing decimails"){
+        HashMap<double> h;
+        std::ifstream file("data/decimals.csv");
+        if(!file.is_open()){
+            std::cerr << "file did not open.";
+        }
+        std::string str;
+        while(getline(file, str)){
+            double num = stod(str);
+        h.insertElement(num);
+            
+        }
+        file.close();
+        {
+            std::cout << "Search for first element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = h.search(192.46);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for last element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = h.search(637.79);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::cout << "Search for element position 10000 took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = h.search(112.87);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+    }
+
+    SECTION("Testing strings"){
+        HashMap<std::string> h;
+        std::ifstream file("data/strings.csv");
+        if(!file.is_open()){
+            std::cerr << "file did not open.";
+        }
+        std::string str;
+        while(getline(file, str)){
+            if(str.back() == '\r'){
+                str.pop_back();
+            }
+            h.insertElement(str);
+            
+        }
+        file.close();
+        {
+            std::string find = "adpaehyyk";
+            std::cout << "Search for first element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = h.search(find);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::string find = "dfbdfhrty";
+            std::cout << "Search for last element took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = h.search(find);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+
+        {
+            std::string find = "vvcmaz";
+            std::cout << "Search for element position 10000 took ";
+            auto start = std::chrono::high_resolution_clock::now();
+            bool found = h.search(find);
+            REQUIRE(found == true);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto time = std::chrono::duration<double, std::milli>(end - start);
+            std::cout << time.count() << " milliseconds." << std::endl;
+        }
+    }
+
 }
