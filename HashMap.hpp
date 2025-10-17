@@ -5,10 +5,15 @@
 template<typename T>
 class HashMap {
     public:
+        HashMap(){
+            num_buckets_ = 1000;
+            std::vector<std::vector<T>> new_store(num_buckets_);
+            store_ = new_store; 
+        }
         HashMap(std::vector<T> vals, int size){
-            num_buckets_ = size;
-            std::vector<std::vector<T>> new_store_(num_buckets_);
-            store_ = new_store_; 
+            num_buckets_ = 1000;
+            std::vector<std::vector<T>> new_store(num_buckets_);
+            store_ = new_store; 
             for(auto val : vals ){
                 insertElement(val);
             }
@@ -27,7 +32,7 @@ class HashMap {
         void insertElement(T val){
             int key = hashKey(val);
             size_t size = store_[key].size();
-            if(size > max_size_){
+            if(size >= max_size_){
                 Hashmap_Resize();
                 key = hashKey(val);
             }
@@ -56,7 +61,20 @@ class HashMap {
             }
         }
 
-        void Hashmap_Resize(){}
+        // copies values in store into temp container, resizes and reinserts all values
+        void Hashmap_Resize(){
+            std::vector<std::vector<T>> new_store = store_;
+            store_.clear();
+            num_buckets_ *= 2;
+            store_.resize(num_buckets_);
+
+            for(auto i = new_store.begin(); i != new_store.end(); i++){
+                for(auto j = i->begin(); j != i->end(); j++){
+                    int key = hashKey(*j);
+                    store_[key].push_back(*j);
+                }
+            }
+        }
 
         // template<typename U>
         // friend std::ostream& operator<<(std::ostream& os, const HashMap<U> &m);
@@ -64,5 +82,5 @@ class HashMap {
         private:
             int num_buckets_;
             std::vector<std::vector<T>> store_;
-            const int max_size_ = 5;
+            const std::size_t max_size_ = 100;
 };
