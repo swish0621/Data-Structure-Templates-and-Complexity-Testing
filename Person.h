@@ -36,3 +36,11 @@ struct Person{
     }
 };
 
+namespace std{
+        template<>
+        struct hash<Person>{
+            std::size_t operator()(const Person& p) const {
+                return std::hash<std::string>()(p.name) + std::hash<int>()(p.age);
+            }
+        };
+    }
