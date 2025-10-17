@@ -5,6 +5,26 @@ Usage: When run Linear, Tree and HashMap objects will be created and tested usin
 make clean - removes all executable and object files
 make all - builds all necessary object files and executables
 ./test - runs the unittesting 
+
+
+Data structure time complexity:
+Linear: 
+    The time complexity of a linear search algorithm is O(n). 
+    meaning that in the worst case it will have to search every element till it finds the element in the very last position.
+    Best case would be finding the element in the first position. 
+    This is supported by the time measurements of the linear search. With the search for the last element in the vector 
+    being significantly longer than searching for the first, with the random value *10000* falling in the middle.
+BST:
+    Provided that the initial root is not heavily skewed to the upper or lower range of possible values
+    the search for an element in a BST is O(log n). If the root is an extreme value it can esentially turn into a 
+    linked list because the tree is not self balancing. This was supported by the measurement of time taken to 
+    search for the first element in comparison to the last element. The times were higher in the last element but not nearly
+    as significant as the linear data structure, again with the random value *10000* falling towrds the middle. 
+Hashmap:
+    The hashmap is able to search for elements in O(1) constant time. This is because regardless of the position of the element 
+    within the structure its location is computed to reveal where it will be and as long as collisions have been managed appropriately 
+    will not have to iterate over many values to find the one it is searching for. The search times for all values int eh hashmap 
+    were roughly equal supporting these statements.
 */
 
 #define CATCH_CONFIG_MAIN
