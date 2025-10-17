@@ -117,6 +117,10 @@ class Tree {
         Tree(T val){
             root = new Node(val);
         }
+        // Constructor called with no input
+        Tree(){
+            root = nullptr;
+        }
         // only responsible for calling the deleteHelper 
         ~Tree(){
             deleteTreeHelper(root);
@@ -124,18 +128,27 @@ class Tree {
 
         // creates a copy of root Node* and calls InsertHelper
         void insertElement(T val){
+            if(root == nullptr){
+                root = new Node(val);
+            }
             insertHelper(root, val);
             return;
         }
 
         // only calls search helper, see in private
         bool search(T val) const {
+            if(root == nullptr){
+                return false;
+            }
             return searchHelper(root, val);
         }
 
         // deleteElement calls search to verify the element is in the tree 
         // if the value is present it calls deleteHelper
         void deleteElement(T val){
+            if(root == nullptr){
+                return;
+            }
             if(search(val)){
                 deleteHelper(root, val);
             }
