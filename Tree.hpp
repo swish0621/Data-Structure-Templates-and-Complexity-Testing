@@ -1,5 +1,10 @@
+/*
+Name: Nicholas Swisher
+Purpose: Define a template for a creating a Tree data structure
+*/
 #include <iostream>
 #include <stdexcept>
+#include <vector>
 
 template<typename T>
 class Tree {

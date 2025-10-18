@@ -1,3 +1,7 @@
+/*
+Name: Nicholas Swisher
+Purpose: Define a template for a creating a HashMap data structure
+*/
 #include <iostream>
 #include <functional>
 #include <stdexcept>

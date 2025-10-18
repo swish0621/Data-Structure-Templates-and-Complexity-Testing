@@ -1,3 +1,7 @@
+/*
+Name: Nicholas Swisher
+Purpose: Create a custom data type to test the templated data structure
+*/
 #include <string>
 #include <iostream>
 

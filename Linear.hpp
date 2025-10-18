@@ -1,6 +1,6 @@
 /*
 Name: Nicholas Swisher
-Purpose: Define a template for a creating a Linear data type
+Purpose: Define a template for a creating a Linear data structure
 */
 #include <vector>
 #include <iostream>
