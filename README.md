@@ -1,6 +1,5 @@
-![Build Status](https://github.com/swish0621/Data-Structure-Templates-and-Complexity-Testing/actions/workflows/workflow_file.yml/badge.svg)
-
 # Data Structure Templates and Complexity Testing
+![Build](https://github.com/swish0621/Data-Structure-Templates-and-Complexity-Testing/actions/workflows/c-cpp.yml/badge.svg)
 
 A C++ project implementing three generic data structures `Linear`, `Tree`, and `HashMap` built entirely from scratch using templates.  
 Each file defines its own structure and logic without relying on STL containers, and includes testing with Catch2 to validate and measure runtime behavior.
