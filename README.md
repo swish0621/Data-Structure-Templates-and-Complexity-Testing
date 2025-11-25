@@ -14,6 +14,9 @@ Each structure is templated, handles its own memory, and supports multiple data 
 Testing covers both functionality and time complexity, comparing real runtime behavior against expected Big-O performance.
 
 ---
+<img width="625" height="139" alt="templating_tests_passing" src="https://github.com/user-attachments/assets/34c6b28e-3719-425e-8bf3-102203f8f756" />
+
+---
 
 ## Files
 
